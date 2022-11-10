@@ -56,18 +56,18 @@ ThemeData lightTheme(BuildContext context) {
 
 ThemeData darkTheme(BuildContext context) {
   return ThemeData(
-    appBarTheme: const AppBarTheme(
-      color: kbackgrounddarkcolor,
-      elevation: 0.0,
-      iconTheme: IconThemeData(color: kbackgroundlightcolor),
-      titleTextStyle: TextStyle(color: kprimarylightcolor),
-    ),
-    visualDensity: VisualDensity.adaptivePlatformDensity,
-    primaryColor: kprimarydarkcolor,
-    brightness: Brightness.dark,
-    canvasColor: kbackgroundlightcolor,
-    scaffoldBackgroundColor: kbackgrounddarkcolor,
-    fontFamily: 'Montserrat',
-    textTheme: Theme.of(context).textTheme,
-  );
+      appBarTheme: const AppBarTheme(
+        color: kbackgrounddarkcolor,
+        elevation: 0.0,
+        iconTheme: IconThemeData(color: kbackgroundlightcolor),
+        titleTextStyle: TextStyle(color: kprimarylightcolor),
+      ),
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      primaryColor: kprimarydarkcolor,
+      brightness: Brightness.dark,
+      canvasColor: kbackgroundlightcolor,
+      scaffoldBackgroundColor: kbackgrounddarkcolor,
+      fontFamily: 'Montserrat',
+      textTheme: Theme.of(context).textTheme,
+      primaryTextTheme: TextTheme(titleLarge: TextStyle(color: Colors.white)));
 }

@@ -1,26 +1,21 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+// List<Country> productsResponseFromJson(String str) =>
+//     List<Country>.from(json.decode(str).map((x) => Country.fromJson(x)));
+
+// String productsResponseToJson(List<Country> data) =>
+//     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 class Country {
-  String name;
-  String capital;
-  String flag;
-  Country(
-    this.name,
-    this.capital,
-    this.flag,
-  );
-  Country copyWith({
-    String? name,
-    String? capital,
-    String? flag,
-  }) {
-    return Country(
-      name ?? this.name,
-      capital ?? this.capital,
-      flag ?? this.flag,
-    );
-  }
+  final String name;
+  final List<Capital>? capital;
+  final String flag;
+
+  Country({
+    required this.name,
+    required this.capital,
+    required this.flag,
+  });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -32,27 +27,44 @@ class Country {
 
   factory Country.fromMap(Map<String, dynamic> map) {
     return Country(
-      map['name'] as String,
-      map['capital'] as String,
-      map['flag'] as String,
+      name: map['name']['common'],
+      capital:
+          List<Capital>.from(map['capital']?.map((p) => Capital.fromJson(p))),
+      flag: map['flag'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Country.fromJson(String source) =>
-      Country.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  String toString() => 'Country(name: $name, capital: $capital, flag: $flag)';
-
-  @override
-  bool operator ==(covariant Country other) {
-    if (identical(this, other)) return true;
-
-    return other.name == name && other.capital == capital && other.flag == flag;
-  }
-
-  @override
-  int get hashCode => name.hashCode ^ capital.hashCode ^ flag.hashCode;
+  factory Country.fromJson(source) => Country.fromMap(json.decode(source));
 }
+
+class Capital {
+  late String name;
+
+  Capital({required this.name});
+
+  Capital.fromJson(Map<String, dynamic> json) {
+    name = json as String;
+  }
+}
+// class Fal {
+//   late String fm;
+
+// //   Map<String, dynamic> toMap() {
+// //     return <String, dynamic>{
+// //       'fm': fm,
+// //     };
+// //   }
+
+// //   factory Fal.fromMap(Map<String, dynamic> map) {
+// //     return Fal(
+// //       fm: map['fm'] as String,
+// //     );
+// //   }
+
+// //   String toJson() => json.encode(toMap());
+
+// //   factory Fal.fromJson(String source) =>
+// //       Fal.fromMap(json.decode(source) as Map<String, dynamic>);
+// }

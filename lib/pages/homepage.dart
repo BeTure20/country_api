@@ -1,7 +1,9 @@
 import 'package:country_api/constant/constant.dart';
 import 'package:country_api/constant/size_config.dart';
+import 'package:country_api/inc/api.dart';
 import 'package:country_api/inc/themes/config.dart';
 import 'package:country_api/inc/themes/custom_theme.dart';
+import 'package:country_api/model/country.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,15 +16,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // Future<Country>? countrylist;
+  late dynamic countrylist;
   bool changelight = false;
-
   @override
   void initState() {
     super.initState();
-
     _getTheme();
+    print(Api.getcountrylist());
+    // countrylist = Api.getcountrylist();
+    //get the data in the api
+    // getdata();
   }
 
+  getdata() async {
+    print(Api.getcountrylist());
+  }
+
+//Build a Search System using Flutter
   _getTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool('theme') ?? false;
@@ -53,13 +64,13 @@ class _HomePageState extends State<HomePage> {
                   icon: !notifier.getthemedark
                       ? const Icon(Icons.light_mode)
                       : Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
+                          padding: const EdgeInsets.all(5),
+                          decoration: const BoxDecoration(
                             color: kbackgroundcolor,
                             shape: BoxShape.circle,
                           ),
-                          child: Center(
-                            child: const Icon(
+                          child: const Center(
+                            child: Icon(
                               Icons.dark_mode,
                             ),
                           ),
@@ -75,15 +86,13 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             SizedBox(
-              //
-
               height: displayHeight(context) * 0.20,
               child: Stack(
                 children: [
                   Container(
                     alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     height: 54,
                     decoration: BoxDecoration(
                       color: kbackgroundcolor,
@@ -91,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     child: TextField(
                       decoration: InputDecoration(
-                          icon: Icon(Icons.search),
+                          icon: const Icon(Icons.search),
                           hintText: "Search Country",
                           hintStyle: TextStyle(
                               fontWeight: FontWeight.w300,
@@ -106,37 +115,41 @@ class _HomePageState extends State<HomePage> {
                     left: 0,
                     right: 0,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: 80,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Colors.white, width: 0.2),
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [Icon(Icons.web), Text("EN")],
+                            margin: EdgeInsets.all(3),
+                            height: 50.0,
+                            width: 90,
+                            child: OutlinedButton(
+                              onPressed: () {},
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const Icon(Icons.web),
+                                  const Text("EN")
+                                ],
+                              ),
                             ),
                           ),
                           Container(
-                            width: 80,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Colors.white, width: 0.2),
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [Icon(Icons.web), Text("EN")],
+                            margin: EdgeInsets.all(3),
+                            height: 50.0,
+                            width: 90,
+                            child: OutlinedButton(
+                              onPressed: () {},
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const Icon(Icons.filter_alt_outlined),
+                                  const Text("Fliter")
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -144,6 +157,24 @@ class _HomePageState extends State<HomePage> {
                     ),
                   )
                 ],
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Scrollbar(
+                  child: ListView.builder(
+                      itemCount: 10,
+                      shrinkWrap: true,
+                      physics: ScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading: FlutterLogo(size: 30.0),
+                          title: Text('Two-line ListTile'),
+                          subtitle: Text('Here is a second line'),
+                        );
+                      }),
+                ),
               ),
             ),
           ],

@@ -1,9 +1,7 @@
-import 'package:country_api/inc/themes/config.dart';
 import 'package:country_api/inc/themes/custom_theme.dart';
 import 'package:country_api/pages/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(
