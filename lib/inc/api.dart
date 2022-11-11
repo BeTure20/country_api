@@ -9,18 +9,16 @@ class ApiConstants {
 }
 
 class Api {
-  static Future<Country?> getcountrylist() async {
+  static Future<List<Country>> getcountrylist() async {
     //final listdata = await rootBundle.loadString("assets/images/data.json");
     var url = Uri.parse("${ApiConstants.baseUrl}/all");
     var response = await http.get(url);
     if (response.statusCode == 200) {
-      final datalist = Country.fromJson(response.body);
+      final List<Country> datalist = countryFromJson(response.body);
       return datalist;
+    } else {
+      return <Country>[];
     }
-    return null;
-    // List<Country> datalist = List.from(json.decode(listdata))
-    //     .map<Country>((item) => Country.fromMap(item))
-    //     .toList();
   }
   // static Future<List<Country>?> getcountrylist() async {
   //   try {

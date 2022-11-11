@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class CustomTheme with ChangeNotifier {
   final String key = "theme";
   late SharedPreferences prefs;
-  bool _isDarkTheme = false;
+  late bool _isDarkTheme;
 
   CustomTheme() {
     _isDarkTheme = false;
@@ -26,7 +26,7 @@ class CustomTheme with ChangeNotifier {
 
   loadformPrefs() async {
     await _initPrefs();
-    _isDarkTheme = prefs.getBool(key) ?? false;
+    _isDarkTheme = prefs.getBool(key) ?? true;
     notifyListeners();
   }
 
@@ -41,33 +41,44 @@ ThemeData lightTheme(BuildContext context) {
     visualDensity: VisualDensity.adaptivePlatformDensity,
     primaryColor: kprimarylightcolor,
     scaffoldBackgroundColor: kprimarylightcolor,
-    fontFamily: 'Montserrat',
-    textTheme: Theme.of(context).textTheme,
-    brightness: Brightness.light,
+
+    colorScheme: ColorScheme.fromSwatch().copyWith(
+      onPrimaryContainer: Colors.grey[200],
+      primary: kbackgrounddarkcolor,
+      secondary: Colors.green,
+    ),
+    textTheme: const TextTheme(bodyText2: TextStyle(color: Colors.black)),
+    // brightness: Brightness.light,
     canvasColor: kbackgrounddarkcolor,
     appBarTheme: const AppBarTheme(
-      color: kbackgroundlightcolor,
+      backgroundColor: kbackgroundlightcolor,
       elevation: 0.0,
       iconTheme: IconThemeData(color: kbackgrounddarkcolor),
-      titleTextStyle: TextStyle(color: kprimarylightcolor, fontSize: 25),
+      titleTextStyle: TextStyle(color: kbackgrounddarkcolor),
     ),
   );
 }
 
 ThemeData darkTheme(BuildContext context) {
   return ThemeData(
-      appBarTheme: const AppBarTheme(
-        color: kbackgrounddarkcolor,
-        elevation: 0.0,
-        iconTheme: IconThemeData(color: kbackgroundlightcolor),
-        titleTextStyle: TextStyle(color: kprimarylightcolor),
-      ),
-      visualDensity: VisualDensity.adaptivePlatformDensity,
-      primaryColor: kprimarydarkcolor,
-      brightness: Brightness.dark,
-      canvasColor: kbackgroundlightcolor,
-      scaffoldBackgroundColor: kbackgrounddarkcolor,
-      fontFamily: 'Montserrat',
-      textTheme: Theme.of(context).textTheme,
-      primaryTextTheme: TextTheme(titleLarge: TextStyle(color: Colors.white)));
+    appBarTheme: const AppBarTheme(
+      color: kbackgrounddarkcolor,
+      elevation: 0.0,
+      iconTheme: IconThemeData(color: kbackgroundlightcolor),
+      titleTextStyle: TextStyle(color: kprimarylightcolor),
+    ),
+    visualDensity: VisualDensity.adaptivePlatformDensity,
+    primaryColor: kprimarydarkcolor,
+    // brightness: Brightness.dark,
+    canvasColor: kbackgroundlightcolor,
+    scaffoldBackgroundColor: kbackgrounddarkcolor,
+
+    colorScheme: ColorScheme.fromSwatch().copyWith(
+      primaryContainer: Color(0xffA9B8D4),
+      onPrimaryContainer: kbackgroundcolor,
+      primary: kbackgrounddarkcolor,
+      secondary: Colors.green,
+    ),
+    textTheme: const TextTheme(bodyText2: TextStyle(color: Colors.white)),
+  );
 }
