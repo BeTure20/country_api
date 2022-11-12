@@ -1,9 +1,9 @@
-import 'dart:convert';
-import 'package:flutter_svg/svg.dart';
+import 'package:country_api/pages/homedetails.dart';
+
 import 'package:country_api/constant/constant.dart';
 import 'package:country_api/constant/size_config.dart';
 import 'package:country_api/inc/api.dart';
-import 'package:country_api/inc/themes/config.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:country_api/inc/themes/custom_theme.dart';
 import 'package:country_api/model/country.dart';
 import 'package:flutter/material.dart';
@@ -18,40 +18,69 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Country>? countrylist;
+  late List<Country> countrylist = [];
   bool changelight = false;
+  late List<Country> searchData = [];
+
+  TextEditingController searchcontroller = TextEditingController();
   @override
   void initState() {
     super.initState();
-    _getTheme();
+    //_getTheme();
+    Api.getcountrylist().then((items) {
+      countrylist = items;
+      setState(() {});
+    });
     // getdata();
   }
-
-  // getdata() {
-  //   Api.getcountrylist().then((value) {
-  //     countrylist = value;
-  //   });
-  //   setState(() {});
+//Build a Search System using Flutter
+  // _getTheme() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   return prefs.getBool('theme') ?? false;
   // }
 
-//Build a Search System using Flutter
-  _getTheme() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('theme') ?? false;
+  onSearchTextChanged(text) {
+    searchData.clear();
+    if (text.isEmpty) {
+      // Check textfield is empty or not
+      setState(() {});
+      return;
+    }
+
+    countrylist?.forEach((data) {
+      if (data.name.common
+          .toString()
+          .toLowerCase()
+          .contains(text.toLowerCase().toString())) {
+        searchData.add(
+            data); // If not empty then add search data into search data list
+      }
+    });
+
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    countrylist = countrylist.toList();
+    countrylist.sort((a, b) => a.name.common.compareTo(b.name.common));
     return Scaffold(
       appBar: AppBar(
-          title: Row(children: const [
+          title: Row(children: [
             Text(
               "Explore",
-              textScaleFactor: 1.2,
+              style: GoogleFonts.pacifico(
+                fontSize: 35,
+                fontWeight: FontWeight.w700,
+              ),
             ),
             Text(
               ".",
-              textScaleFactor: 1.2,
+              style: GoogleFonts.pacifico(
+                color: Colors.amber,
+                fontSize: 35,
+                fontWeight: FontWeight.w700,
+              ),
             )
           ]),
           elevation: 0,
@@ -61,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                 duration: const Duration(seconds: 500),
                 child: IconButton(
                   icon: !notifier.getthemedark
-                      ? const Icon(Icons.light_mode)
+                      ? const Icon(Icons.light_mode_outlined)
                       : Container(
                           padding: const EdgeInsets.all(5),
                           decoration: const BoxDecoration(
@@ -84,6 +113,9 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Column(
           children: [
+            const SizedBox(
+              height: 20,
+            ),
             SizedBox(
               height: displayHeight(context) * 0.20,
               child: Stack(
@@ -98,6 +130,8 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: TextField(
+                      onChanged: onSearchTextChanged,
+                      controller: searchcontroller,
                       decoration: InputDecoration(
                           icon: const Icon(Icons.search),
                           hintText: "Search Country",
@@ -120,11 +154,13 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            margin: EdgeInsets.all(3),
-                            height: 50.0,
+                            margin: const EdgeInsets.all(3),
+                            height: 47.0,
                             width: 90,
                             child: OutlinedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                showLanguageModal(context);
+                              },
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
@@ -136,8 +172,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.all(3),
-                            height: 50.0,
+                            margin: const EdgeInsets.all(3),
+                            height: 47.0,
                             width: 90,
                             child: OutlinedButton(
                               onPressed: () {},
@@ -162,65 +198,87 @@ class _HomePageState extends State<HomePage> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Scrollbar(
-                  child: FutureBuilder(
-                    future: Api.getcountrylist(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<dynamic> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.connectionState ==
-                          ConnectionState.done) {
-                        if (snapshot.hasError) {
-                          return const Text('Error');
-                        } else if (snapshot.hasData) {
-                          return ListView.builder(
-                              itemCount: snapshot.data.length,
-                              shrinkWrap: true,
-                              physics: ScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                var datalist = snapshot.data[index];
-                                // var sortdata = snapshot.data.map((value) {
-                                //   value.sort((a, b) {
-                                //     return a.name.common
-                                //         .toLowerCase()
-                                //         .compareTo(b.name.common.toLowerCase());
-                                //     //softing on alphabetical order (Ascending order by Name String)
-                                //   });
-                                // });
-                                // print(sortdata);
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Page2(
-                                                countrylist: datalist,
-                                                coutryname:
-                                                    datalist.name.common,
-                                              )),
-                                    );
-                                  },
-                                  child: Hero(
-                                    tag: "$index",
-                                    child: ListTile(
-                                      leading: Image.network(
-                                        datalist.flags.png,
-                                        width: 40,
-                                        height: 40,
+                  child: FutureProvider(
+                    create: (context) => Api.getcountrylist(),
+                    initialData: countrylist,
+                    // initialData: countrylist,
+                    child: Consumer(
+                      builder: (context, value, child) {
+                        return searchData.isNotEmpty
+                            ? ListView.builder(
+                                itemCount: searchData!.length,
+                                shrinkWrap: true,
+                                physics: const ScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  var datalist = searchData![index];
+
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Page2(
+                                                  countrylist: datalist,
+                                                  coutryname:
+                                                      datalist.name.common,
+                                                )),
+                                      );
+                                    },
+                                    child: Hero(
+                                      tag: "$index",
+                                      child: ListTile(
+                                        leading: Image.network(
+                                          datalist.flags!.png,
+                                          width: 40,
+                                          height: 40,
+                                        ),
+                                        title: Text(datalist.name.common),
+                                        subtitle: Text(datalist.capital
+                                            .replaceAll(
+                                                RegExp(r"\p{P}", unicode: true),
+                                                "")),
                                       ),
-                                      title: Text(datalist.name.common),
-                                      subtitle: Text(datalist.capital),
                                     ),
-                                  ),
-                                );
-                              });
-                        } else {
-                          return const Text('Empty data');
-                        }
-                      } else {
-                        return Text('State: ${snapshot.connectionState}');
-                      }
-                    },
+                                  );
+                                })
+                            : ListView.builder(
+                                itemCount: countrylist!.length,
+                                shrinkWrap: true,
+                                physics: const ScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  var datalist = countrylist![index];
+
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Page2(
+                                                  countrylist: datalist,
+                                                  coutryname:
+                                                      datalist.name.common,
+                                                )),
+                                      );
+                                    },
+                                    child: Hero(
+                                      tag: "$index",
+                                      child: ListTile(
+                                        leading: Image.network(
+                                          datalist.flags!.png,
+                                          width: 40,
+                                          height: 40,
+                                        ),
+                                        title: Text(datalist.name.common),
+                                        subtitle: Text(datalist.capital
+                                            .replaceAll(
+                                                RegExp(r"\p{P}", unicode: true),
+                                                "")),
+                                      ),
+                                    ),
+                                  );
+                                });
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -230,199 +288,92 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
 
-class Page2 extends StatefulWidget {
-  final String coutryname;
-  final dynamic countrylist;
-  const Page2({
-    super.key,
-    required this.coutryname,
-    required this.countrylist,
-  });
-
-  @override
-  State<Page2> createState() => _Page2State();
-}
-
-class _Page2State extends State<Page2> {
-  PageController controller = PageController();
-  int _currentIndex = 0;
-  var countrylist;
-  @override
-  void initState() {
-    /// initialized [conroller] after the screen is loaded
-    countrylist = widget.countrylist;
-    print(countrylist);
-    controller = PageController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    /// [conroller] remove from the widget tree permanantly after the screen is closed
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          widget.coutryname,
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              width: 320,
-              height: 200, // total height of the container [Image Box]
-              child: Stack(
-                children: [
-                  PageView(
-                    controller: controller,
-                    scrollDirection:
-                        Axis.horizontal, // scrolling direction of image
-                    physics: ScrollPhysics(), // scrolling behaviour
-                    onPageChanged: (index) {
-                      setState(() {
-                        _currentIndex = index;
-                      });
-                    },
-                    children: [
-                      SizedBox(
-                        height: 380,
-                        width: 200,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.transparent, width: 5)),
-                          child: Image.network(
-                            countrylist.flags.png, // List of Offers precentages
-                            width: MediaQuery.of(context).size.width,
-                            colorBlendMode: BlendMode.softLight,
-                            color: Colors.black.withOpacity(0.8),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 380,
-                        width: 200,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.transparent, width: 5)),
-                          child: SvgPicture.network(
-                            countrylist
-                                .coatOfArms.svg, // List of Offers precentages
-                            width: MediaQuery.of(context).size.width,
-                            colorBlendMode: BlendMode.softLight,
-                            color: Colors.black.withOpacity(0.8),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 380,
-                        width: 200,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.transparent, width: 5)),
-                          child: SvgPicture.network(
-                            countrylist
-                                .coatOfArms.svg, // List of Offers precentages
-                            width: MediaQuery.of(context).size.width,
-                            colorBlendMode: BlendMode.softLight,
-                            color: Colors.black.withOpacity(0.8),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ],
+  showLanguageModal(context) {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (builder) {
+          return Container(
+            // height: 800,
+            color: Colors.transparent,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10.0),
+                  topRight: Radius.circular(10.0),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10.0, // has the effect of softening the shadow
+                    spreadRadius: 0.0, // has the effect of extending the shadow
                   )
-                  // Positioned(
-                  //   bottom: 15, // Position form Bottom
-                  //   right: 15, // Position from Right
-                  //   child: Container(
-                  //     height: 15,
-                  //     child: ListView.builder(
-                  //       itemCount: 4,
-                  //       scrollDirection: Axis.horizontal,
-                  //       shrinkWrap: true,
-                  //       physics: ScrollPhysics(),
-                  //       itemBuilder: (BuildContext context, int i2) {
-                  //         return Padding(
-                  //           padding: const EdgeInsets.all(4.0),
-                  //           child: Container(
-                  //             height: 5,
-                  //             width: 15,
-                  //             decoration: _currentIndex == i2
-                  //                 ? BoxDecoration(
-                  //                     color: Colors
-                  //                         .white, // Selected Slider Indicator Color
-                  //                     borderRadius: BorderRadius.circular(15))
-                  //                 : BoxDecoration(
-                  //                     color: Colors
-                  //                         .black, // Unselected Slider Indicator Color
-                  //                     shape: BoxShape
-                  //                         .circle // shape of Unselected indicator
-                  //                     ),
-                  //           ),
-                  //         );
-                  //       },
-                  //     ),
-                  //   ),
-                  // ) // end indicator
+                ],
+              ),
+              alignment: Alignment.topLeft,
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.only(top: 5, left: 10),
+                        child: const Text(
+                          "Languages",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.black87),
+                        ),
+                      ),
+                      Container(
+                          margin: const EdgeInsets.only(top: 5, right: 5),
+                          child: IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            color: Colors.black,
+                            icon: const Icon(Icons.close_outlined),
+                          )),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          color: Color(0xfff8f8f8),
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          textAlign: TextAlign.justify,
+                          text: const TextSpan(
+                              text:
+                                  "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit ?",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  wordSpacing: 1)),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
-            mytextdata(
-              text1: '',
-              text2: '',
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class mytextdata extends StatelessWidget {
-  final String text1;
-  final String text2;
-  const mytextdata({
-    Key? key,
-    required this.text1,
-    required this.text2,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Text(
-              text1,
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-            ),
-            Text(text2,
-                style: TextStyle(fontWeight: FontWeight.w300, fontSize: 16))
-          ],
-        ),
-        SizedBox(
-          height: 5,
-        )
-      ],
-    );
+          );
+        });
   }
 }

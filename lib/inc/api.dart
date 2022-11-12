@@ -10,11 +10,12 @@ class ApiConstants {
 
 class Api {
   static Future<List<Country>> getcountrylist() async {
+    List<Country> datalist = [];
     //final listdata = await rootBundle.loadString("assets/images/data.json");
     var url = Uri.parse("${ApiConstants.baseUrl}/all");
     var response = await http.get(url);
     if (response.statusCode == 200) {
-      final List<Country> datalist = countryFromJson(response.body);
+      datalist = countryFromJson(response.body);
       return datalist;
     } else {
       return <Country>[];

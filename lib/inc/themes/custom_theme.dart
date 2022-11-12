@@ -5,14 +5,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 class CustomTheme with ChangeNotifier {
   final String key = "theme";
   late SharedPreferences prefs;
-  late bool _isDarkTheme;
+  bool _isDarkTheme = false;
 
   CustomTheme() {
-    _isDarkTheme = false;
     loadformPrefs();
   }
   bool get getthemedark => _isDarkTheme;
-  ThemeMode get currentTheme => _isDarkTheme ? ThemeMode.dark : ThemeMode.light;
+  ThemeMode get currentTheme =>
+      _isDarkTheme != false ? ThemeMode.dark : ThemeMode.light;
 
   void toggleTheme() {
     _isDarkTheme = !_isDarkTheme;
@@ -26,7 +26,7 @@ class CustomTheme with ChangeNotifier {
 
   loadformPrefs() async {
     await _initPrefs();
-    _isDarkTheme = prefs.getBool(key) ?? true;
+    _isDarkTheme = prefs.getBool(key) ?? false;
     notifyListeners();
   }
 
@@ -68,16 +68,20 @@ ThemeData darkTheme(BuildContext context) {
       titleTextStyle: TextStyle(color: kprimarylightcolor),
     ),
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    primaryColor: kprimarydarkcolor,
-    // brightness: Brightness.dark,
+    primaryColor: kbackgroundlightcolor,
     canvasColor: kbackgroundlightcolor,
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+          foregroundColor: Colors.white,
+          side: BorderSide(color: Colors.white54, width: 1)),
+    ),
     scaffoldBackgroundColor: kbackgrounddarkcolor,
-
     colorScheme: ColorScheme.fromSwatch().copyWith(
-      primaryContainer: Color(0xffA9B8D4),
+      primaryContainer: const Color(0xffA9B8D4),
       onPrimaryContainer: kbackgroundcolor,
-      primary: kbackgrounddarkcolor,
-      secondary: Colors.green,
+      primary: kbackgroundlightcolor,
+      outline: kbackgroundlightcolor,
+      brightness: Brightness.dark,
     ),
     textTheme: const TextTheme(bodyText2: TextStyle(color: Colors.white)),
   );
