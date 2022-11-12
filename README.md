@@ -43,6 +43,8 @@ i got the design inspiration from https://www.figma.com/file/v9AXj4VZNnx26fTthrP
 
 ## Appetize.io link
 
+https://appetize.io/embed/lsdby5qmkg2rnfdzbdc4ou3vh4?device=pixel4&osVersion=11.0&scale=75&deviceColor=black
+
 <!--
 https://appetize.io/app/wsw6vjo3tc7prhmvcx3of3bsq4?device=pixel4&osVersion=11.0&scale=75
  -->
