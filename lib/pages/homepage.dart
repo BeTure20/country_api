@@ -8,7 +8,6 @@ import 'package:country_api/inc/themes/custom_theme.dart';
 import 'package:country_api/model/country.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -130,6 +129,7 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: TextField(
+                      textAlign: TextAlign.center,
                       onChanged: onSearchTextChanged,
                       controller: searchcontroller,
                       decoration: InputDecoration(
@@ -199,7 +199,6 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Scrollbar(
                   child: FutureProvider(
-                    // lazy: true,
                     create: (context) => Api.getcountrylist(),
                     initialData: countrylist,
                     // initialData: countrylist,
