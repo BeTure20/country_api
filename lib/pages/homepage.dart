@@ -199,84 +199,26 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Scrollbar(
                   child: FutureProvider(
+                    // lazy: true,
                     create: (context) => Api.getcountrylist(),
                     initialData: countrylist,
                     // initialData: countrylist,
                     child: Consumer(
                       builder: (context, value, child) {
+                        // var datalist = countrylist[index];
+//                                   var username = countrylist[index].name.common;
+//                                   var currentHeader = username.substring(0, 1);
+//                                   var header = username.substring(0, 1);
+//                                   if (header != currentHeader) {
+
+// }else{
+//  return searchData.isNotEmpty
+                        // ? mylistdata(searchData)
+                        // : mylistdata(countrylist);
+// }
                         return searchData.isNotEmpty
-                            ? ListView.builder(
-                                itemCount: searchData!.length,
-                                shrinkWrap: true,
-                                physics: const ScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  var datalist = searchData![index];
-
-                                  return GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Page2(
-                                                  countrylist: datalist,
-                                                  coutryname:
-                                                      datalist.name.common,
-                                                )),
-                                      );
-                                    },
-                                    child: Hero(
-                                      tag: "$index",
-                                      child: ListTile(
-                                        leading: Image.network(
-                                          datalist.flags!.png,
-                                          width: 40,
-                                          height: 40,
-                                        ),
-                                        title: Text(datalist.name.common),
-                                        subtitle: Text(datalist.capital
-                                            .replaceAll(
-                                                RegExp(r"\p{P}", unicode: true),
-                                                "")),
-                                      ),
-                                    ),
-                                  );
-                                })
-                            : ListView.builder(
-                                itemCount: countrylist!.length,
-                                shrinkWrap: true,
-                                physics: const ScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  var datalist = countrylist![index];
-
-                                  return GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Page2(
-                                                  countrylist: datalist,
-                                                  coutryname:
-                                                      datalist.name.common,
-                                                )),
-                                      );
-                                    },
-                                    child: Hero(
-                                      tag: "$index",
-                                      child: ListTile(
-                                        leading: Image.network(
-                                          datalist.flags!.png,
-                                          width: 40,
-                                          height: 40,
-                                        ),
-                                        title: Text(datalist.name.common),
-                                        subtitle: Text(datalist.capital
-                                            .replaceAll(
-                                                RegExp(r"\p{P}", unicode: true),
-                                                "")),
-                                      ),
-                                    ),
-                                  );
-                                });
+                            ? mylistdata(searchData)
+                            : mylistdata(countrylist);
                       },
                     ),
                   ),
@@ -287,6 +229,140 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+//  ListView.builder(
+//                                 itemCount: countrylist!.length,
+//                                 shrinkWrap: true,
+//                                 physics: const ScrollPhysics(),
+//                                 itemBuilder: (context, index) {
+//                                   var datalist = countrylist[index];
+//                                   var username = countrylist[index].name.common;
+//                                   var currentHeader = username.substring(0, 1);
+//                                   var header = username.substring(0, 1);
+//                                   if (header != currentHeader) {
+//                                     return Column(
+//                                       mainAxisAlignment:
+//                                           MainAxisAlignment.start,
+//                                       crossAxisAlignment:
+//                                           CrossAxisAlignment.start,
+//                                       children: [
+//                                         Container(
+//                                             padding: EdgeInsets.only(
+//                                                 left: 30, top: 10, bottom: 10),
+//                                             child: Text(
+//                                               currentHeader,
+//                                               style: TextStyle(
+//                                                   fontWeight: FontWeight.bold),
+//                                             )),
+//                                         GestureDetector(
+//                                           onTap: () {
+//                                             Navigator.push(
+//                                               context,
+//                                               MaterialPageRoute(
+//                                                   builder: (context) => Page2(
+//                                                         countrylist: datalist,
+//                                                         coutryname: datalist
+//                                                             .name.common,
+//                                                       )),
+//                                             );
+//                                           },
+//                                           child: Hero(
+//                                             tag: "$index",
+//                                             child: ListTile(
+//                                               leading: Image.network(
+//                                                 datalist.flags!.png,
+//                                                 width: 40,
+//                                                 height: 40,
+//                                               ),
+//                                               title: Text(datalist.name.common),
+//                                               subtitle: Text(datalist.capital
+//                                                   .replaceAll(
+//                                                       RegExp(r"\p{P}",
+//                                                           unicode: true),
+//                                                       "")),
+//                                             ),
+//                                           ),
+//                                         )
+//                                       ],
+//                                     );
+  ListView mylistdata(searchData) {
+    return ListView.builder(
+        itemCount: searchData!.length,
+        shrinkWrap: true,
+        physics: const ScrollPhysics(),
+        itemBuilder: (context, index) {
+          var datalist = searchData![index];
+          var username = searchData[index].name.common;
+          var currentHeader = username.substring(0, 1);
+          var header = username.substring(0, 1);
+          if (index == 0 || index == 0 ? true : (header != currentHeader)) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                    color: Colors.black,
+                    padding: EdgeInsets.only(left: 30, top: 10, bottom: 10),
+                    child: Text(
+                      currentHeader,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Page2(
+                                countrylist: datalist,
+                                coutryname: datalist.name.common,
+                              )),
+                    );
+                  },
+                  child: Hero(
+                    tag: "$index",
+                    child: ListTile(
+                      leading: Image.network(
+                        datalist.flags!.png,
+                        width: 40,
+                        height: 40,
+                      ),
+                      title: Text(datalist.name.common),
+                      subtitle: Text(datalist.capital
+                          .replaceAll(RegExp(r"\p{P}", unicode: true), "")),
+                    ),
+                  ),
+                )
+              ],
+            );
+          } else {
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Page2(
+                            countrylist: datalist,
+                            coutryname: datalist.name.common,
+                          )),
+                );
+              },
+              child: Hero(
+                tag: "$index",
+                child: ListTile(
+                  leading: Image.network(
+                    datalist.flags!.png,
+                    width: 40,
+                    height: 40,
+                  ),
+                  title: Text(datalist.name.common),
+                  subtitle: Text(datalist.capital
+                      .replaceAll(RegExp(r"\p{P}", unicode: true), "")),
+                ),
+              ),
+            );
+          }
+        });
   }
 
   showLanguageModal(context) {
