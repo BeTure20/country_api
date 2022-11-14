@@ -38,18 +38,7 @@ class _HomePageState extends State<HomePage> {
     getConnectivity();
     super.initState();
     //_getTheme();
-    Api.getcountrylist().then((items) {
-      countrylist = items;
-      for (var element in items) {
-        regionlist.add(element.region);
-        // regionlist.add({"region": element.region, "status": false});
-      }
-      for (var element in items) {
-        timezonelist.add(
-            element.timezones.replaceAll(RegExp(r"\p{P}", unicode: true), ""));
-      }
-      setState(() {});
-    });
+
     // getdata();
   }
 
@@ -65,6 +54,19 @@ class _HomePageState extends State<HomePage> {
         if (!isDeviceConnected && isAlertSet == true) {
           showDialogBox();
           setState(() => isAlertSet = true);
+        } else {
+          Api.getcountrylist().then((items) {
+            countrylist = items;
+            for (var element in items) {
+              regionlist.add(element.region);
+              // regionlist.add({"region": element.region, "status": false});
+            }
+            for (var element in items) {
+              timezonelist.add(element.timezones
+                  .replaceAll(RegExp(r"\p{P}", unicode: true), ""));
+            }
+            setState(() {});
+          });
         }
       });
   onSearchTextChanged(text) {
@@ -88,6 +90,31 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
+  showDialogBox() => showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "No Connection!!",
+            ),
+            content: Text("Please Check your Internet Connection"),
+            actions: [
+              TextButton(
+                  onPressed: () async {
+                    Navigator.pop(context, "Cancel");
+                    setState(() => isAlertSet = false);
+                    isDeviceConnected =
+                        await InternetConnectionChecker().hasConnection;
+                    if (!isDeviceConnected) {
+                      showDialogBox();
+                      setState(() => isAlertSet = true);
+                    }
+                  },
+                  child: Text("Okay"))
+            ],
+          );
+        },
+      );
   @override
   void dispose() {
     subscription.cancel();
@@ -508,7 +535,7 @@ class _HomePageState extends State<HomePage> {
                                     return ListTile(
                                       title: Text(region[index]),
                                       trailing: Checkbox(
-                                        value: region[index],
+                                        value: true,
                                         onChanged: (value) {
                                           setState(() {
                                             // region[index].status = value;
@@ -591,30 +618,4 @@ class _HomePageState extends State<HomePage> {
           );
         });
   }
-
-  showDialogBox() => showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-              "No Connection!!",
-            ),
-            content: Text("Please Check your Internet Connection"),
-            actions: [
-              TextButton(
-                  onPressed: () async {
-                    Navigator.pop(context, "Cancel");
-                    setState(() => isAlertSet = false);
-                    isDeviceConnected =
-                        await InternetConnectionChecker().hasConnection;
-                    if (!isDeviceConnected) {
-                      showDialogBox();
-                      setState(() => isAlertSet = true);
-                    }
-                  },
-                  child: Text("Okay"))
-            ],
-          );
-        },
-      );
 }

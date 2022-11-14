@@ -24,7 +24,8 @@ i got the design inspiration from https://www.figma.com/file/v9AXj4VZNnx26fTthrP
 - page_transition
 - http
 - flutter_svg
-- animated_splash_screen
+- connectivity_plus
+- internet_connection_checker
 
 ## More features:
 
@@ -37,8 +38,7 @@ i got the design inspiration from https://www.figma.com/file/v9AXj4VZNnx26fTthrP
 
 ## Challenges:
 
-- The greatest challenge I faced was coming up with a design and how to go about it within a short amount of time.
-  -Light/dark mode
+- Fliter Region
 - language translation
 
 ## Appetize.io link
