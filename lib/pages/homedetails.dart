@@ -40,7 +40,7 @@ class _Page2State extends State<Page2> {
         centerTitle: true,
         title: Text(
           widget.coutryname,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
         ),
       ),
       body: SafeArea(
@@ -56,7 +56,7 @@ class _Page2State extends State<Page2> {
                       controller: controller,
                       scrollDirection:
                           Axis.horizontal, // scrolling direction of image
-                      physics: ScrollPhysics(), // scrolling behaviour
+                      physics: const ScrollPhysics(), // scrolling behaviour
                       onPageChanged: (index) {
                         setState(() {
                           _currentIndex = index;
@@ -109,7 +109,7 @@ class _Page2State extends State<Page2> {
                       right: 0,
                       height: 30,
                       child: Container(
-                        color: Color.fromARGB(62, 0, 0, 0),
+                        color: const Color.fromARGB(62, 0, 0, 0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: List<Widget>.generate(
@@ -140,7 +140,7 @@ class _Page2State extends State<Page2> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Mytextdata(
@@ -160,29 +160,29 @@ class _Page2State extends State<Page2> {
                 text1: 'Motto',
                 text2: countrylist.population,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Mytextdata(
+              const Mytextdata(
                 text1: 'Official language',
                 text2: "English",
               ),
-              Mytextdata(
+              const Mytextdata(
                 text1: 'Ethic group',
                 text2: "Europe",
               ),
-              Mytextdata(
+              const Mytextdata(
                 text1: 'Religion',
                 text2: "Christianity",
               ),
-              Mytextdata(
+              const Mytextdata(
                 text1: 'Government',
                 text2: "Parliamentary democracy",
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Mytextdata(
+              const Mytextdata(
                 text1: 'Independence',
                 text2: "8th September, 1278",
               ),
@@ -190,7 +190,7 @@ class _Page2State extends State<Page2> {
                 text1: 'Area',
                 text2: countrylist.area,
               ),
-              Mytextdata(
+              const Mytextdata(
                 text1: 'Currency',
                 text2: "USD",
               ),
@@ -198,7 +198,7 @@ class _Page2State extends State<Page2> {
                 text1: 'GDP',
                 text2: countrylist.population,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Mytextdata(
@@ -206,7 +206,7 @@ class _Page2State extends State<Page2> {
                 text2: countrylist.timezones
                     .replaceAll(RegExp(r"\p{P}", unicode: true), ""),
               ),
-              Mytextdata(
+              const Mytextdata(
                 text1: 'Date format ',
                 text2: "dd/mm/yyyy",
               ),
@@ -245,16 +245,20 @@ class Mytextdata extends StatelessWidget {
             children: [
               Text(
                 "$text1: ",
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                style:
+                    const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
               ),
-              Text("$text2",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w300,
-                    fontSize: 16,
-                  ))
+              Text(
+                "$text2",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w300,
+                  fontSize: 16,
+                ),
+                softWrap: true,
+              )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 4,
           )
         ],

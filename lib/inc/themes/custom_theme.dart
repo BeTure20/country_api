@@ -39,10 +39,10 @@ class CustomTheme with ChangeNotifier {
 ThemeData lightTheme(BuildContext context) {
   return ThemeData(
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    primaryColor: kprimarylightcolor,
+    primaryColor: kbackgrounddarkcolor,
     scaffoldBackgroundColor: kprimarylightcolor,
-
-    colorScheme: ColorScheme.fromSwatch().copyWith(
+    colorScheme: ColorScheme.light(
+      brightness: Brightness.light,
       onPrimaryContainer: Colors.grey[200],
       primary: kbackgrounddarkcolor,
       secondary: Colors.green,
@@ -67,17 +67,21 @@ ThemeData darkTheme(BuildContext context) {
       iconTheme: IconThemeData(color: kbackgroundlightcolor),
       titleTextStyle: TextStyle(color: kprimarylightcolor),
     ),
+    dialogBackgroundColor: kbackgrounddarkcolor,
     visualDensity: VisualDensity.adaptivePlatformDensity,
     primaryColor: kbackgroundlightcolor,
-    canvasColor: kbackgroundlightcolor,
+    primaryColorDark: kbackgrounddarkcolor,
+    canvasColor: kbackgrounddarkcolor,
+    cardColor: kbackgrounddarkcolor,
+    dialogTheme: DialogTheme(backgroundColor: kbackgrounddarkcolor),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
           foregroundColor: Colors.white,
           side: BorderSide(color: Colors.white54, width: 1)),
     ),
     scaffoldBackgroundColor: kbackgrounddarkcolor,
-    colorScheme: ColorScheme.fromSwatch().copyWith(
-      primaryContainer: const Color(0xffA9B8D4),
+    colorScheme: const ColorScheme.dark(
+      primaryContainer: Color(0xffA9B8D4),
       onPrimaryContainer: kbackgroundcolor,
       primary: kbackgroundlightcolor,
       outline: kbackgroundlightcolor,
