@@ -30,11 +30,11 @@ i got the design inspiration from https://www.figma.com/file/v9AXj4VZNnx26fTthrP
 ## More features:
 
 -
-- I will love to add Dark mode and language translation
+- I will love to add TimeZone,Region and language translation the app
 
 ## APK link
 
-<!-- https://drive.google.com/file/d/1GtZSKPUH7nnEB0fCWADUjB5XUYhELcka/view?usp=share_link -->
+https://drive.google.com/drive/folders/1Ii6c8OtuQf7iwNm1Pic_dXQfUjDEjhHs?usp=sharing
 
 ## Challenges:
 
@@ -43,4 +43,4 @@ i got the design inspiration from https://www.figma.com/file/v9AXj4VZNnx26fTthrP
 
 ## Appetize.io link
 
-<!-- https://appetize.io/embed/lsdby5qmkg2rnfdzbdc4ou3vh4?device=pixel4&osVersion=11.0&scale=75&deviceColor=black -->
+https://appetize.io/app/kmialnz7lktrm3h2sxdmtftdge?device=pixel4&osVersion=11.0&scale=75
