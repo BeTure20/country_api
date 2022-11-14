@@ -16,12 +16,12 @@ class Country {
   Flags? coatOfArms;
   Idd? dialcode;
   Car? car;
-  Languages? languages;
+  // Languages? languages;
   double area;
   Country(
       {required this.name,
       required this.area,
-      required this.languages,
+      // required this.languages,
       required this.dialcode,
       required this.region,
       required this.population,
@@ -43,7 +43,7 @@ class Country {
         capital: json["capital"].toString(),
         flags: Flags.fromJson(json['flags']),
         car: Car.fromJson(json['car']),
-        languages: Languages.fromJson(json["languages"]),
+        // languages: Languages.fromJson(json["languages"]),
         coatOfArms: Flags.fromJson(json['coatOfArms']),
       );
 
@@ -58,7 +58,7 @@ class Country {
         "flags": flags!.toJson(),
         "car": car!.toJson(),
         "idd": dialcode!.toJson(),
-        "languages": languages!.toJson(),
+        // "languages": languages!.toJson(),
         "coatOfArms": coatOfArms!.toJson()
       };
 }
@@ -144,16 +144,16 @@ class Car {
   }
 }
 
-class Languages {
-  String? ara;
+// class Languages {
+//   String? ara;
 
-  Languages({this.ara});
+//   Languages({this.ara});
 
-  Languages.fromJson(Map<String, dynamic> json) {
-    ara = json['ara'] as String;
-  }
+//   Languages.fromJson(Map<String, dynamic> json) {
+//     ara = json['ara'] as String;
+//   }
 
-  Map<String, dynamic> toJson() => {
-        "ara": ara,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "ara": ara,
+//       };
+// }
